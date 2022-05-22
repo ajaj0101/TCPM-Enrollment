@@ -31,3 +31,21 @@ class Person:
         self.workPhone = newWork
 
 
+class EmerContact:
+    def setContactName(self, newName):
+        self.cName = newName
+    
+    def setContactPhone(self, newHome, newWork):
+        self.home = newHome
+        self.work = newWork
+
+class Record:
+    def __init__(self, newRecord):
+        self.record = newRecord
+    
+    def setAnswer(self, newAnswer):
+        self.answer = newAnswer
+    
+    def setResponse(self, newResponse):
+        self.response = newResponse
+
