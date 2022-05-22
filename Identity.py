@@ -3,7 +3,7 @@
 
 class Person:
     # Init would hold the person's name in a string
-    def __init__(self, newName):
+    def setName(self, newName):
         self.name = newName
 
     # setBirth() will create the person's date of birth in the form of a string
@@ -49,3 +49,4 @@ class Record:
     def setResponse(self, newResponse):
         self.response = newResponse
 
+gi
