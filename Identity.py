@@ -48,5 +48,3 @@ class Record:
     
     def setResponse(self, newResponse):
         self.response = newResponse
-
-gi

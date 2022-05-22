@@ -28,7 +28,7 @@ class Applicant:
         self.emergencyContact2.setContactName(cName2)
         self.emergencyContact2.setContactPhone(cHomePhone2, cWorkPhone2)
 
-    def setBackground(self, a1, a2, a3, a4, r1, r2, r3, r4):
+    def setBackground(self, a1, r1, a2, r2, a3, r3, a4, r4):
         self.criminalRecord.setAnswer(a1)
         self.criminalRecord.setResponse(r1)
 
