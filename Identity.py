@@ -1,50 +1,60 @@
 # Create a class that resembles an identity of a person, with their information privy to enrolling on a TCPM form
 
 
-class Person:
-    # Init would hold the person's name in a string
-    def setName(self, newName):
-        self.name = newName
+from xml.etree.ElementTree import C14NWriterTarget
 
-    # setBirth() will create the person's date of birth in the form of a string
-    def setBirth(self, newBirth):
+
+class Person:
+    # Mutator Methods
+    def __init__(self, newName, newBirth, newSex, newAddress, newCity, newState, newZip, newOcc,
+                    newHome, newWork, c1N, c1HN, c1WN, c2N, c2HN, c2WN, crimLabel, crimAns, crimResp,
+                    healthLabel, healthAns, healthResp, medLabel, medAns, medResp, expLabel, expAns, expResp):
+        self.name = newName
         self.birth = newBirth
-    
-    # setSex() will create the person's sex in a char or string
-    def setSex(self, newSex):
         self.sex = newSex
-    
-    # setLoc() will define the person's address, city, state, and zip in strings
-    def setLoc(self, newAddress, newCity, newState, newZip):
         self.address = newAddress
         self.city = newCity
         self.state = newState
         self.zip = newZip
-    
-    # setJob() will define the person's occupation in a string
-    def setJob(self, newOcc):
         self.occ = newOcc
+        self.pHomePhone = newHome
+        self.pWorkPhone = newWork
+        self.c1Name = c1N 
+        self.c1HomeNum = c1HN
+        self.c1WorkNum = c1WN 
+        self.c2Name = c2N 
+        self.c2HomeNum = c2HN
+        self.c2WorkNum = c2WN
+        self.crimRec = crimLabel
+        self.crimA = crimAns
+        self.crimR = crimResp
+        self.healthRec = healthLabel
+        self.healthA = healthAns
+        self.healthR = healthResp
+        self.medRec = medLabel
+        self.medA = medAns
+        self.medR = medResp
+        self.expRec = expLabel
+        self.expA = expAns
+        self.expR = expResp
 
-    # set phone will define the person's work and home phone number in a string 
-    def setPhone(self, newHome, newWork):
-        self.homePhone = newHome
-        self.workPhone = newWork
-
-
-class EmerContact:
-    def setContactName(self, newName):
-        self.cName = newName
-    
-    def setContactPhone(self, newHome, newWork):
-        self.home = newHome
-        self.work = newWork
-
-class Record:
-    def __init__(self, newRecord):
-        self.record = newRecord
-    
-    def setAnswer(self, newAnswer):
-        self.answer = newAnswer
-    
-    def setResponse(self, newResponse):
-        self.response = newResponse
+    def display(self):
+        print("--Personal Information--\n")
+        print("NAME:", self.name)
+        print("BIRTHDAY:", self.birth)
+        print("SEX:", self.sex)
+        print("ADDRESS:", self.address)
+        print("CITY:", self.city)
+        print("STATE:", self.state)
+        print("ZIP CODE:", self.zip)
+        print("OCCUPATION:", self.occ)
+        print("HOME PHONE:", self.pHomePhone)
+        print("WORK PHONE:", self.pWorkPhone)
+        print("\n--Emergency Contacts--\n")
+        print("(1)", self.c1Name, "\nHome:", self.c1HomeNum, "\nWork:", self.c1WorkNum)
+        print("(2)", self.c2Name, "\nHome:", self.c2HomeNum, "\nWork:", self.c2WorkNum)
+        print("\n--Background Information--\n")
+        print(self.crimRec, ":", self.crimA, ":", self.crimR)
+        print(self.healthRec, ":", self.healthA, ":", self.healthR)
+        print(self.medRec, ":", self.medA, ":", self.medR)
+        print(self.expRec, ":", self.expA, ":", self.expR)
