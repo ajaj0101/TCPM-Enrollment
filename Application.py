@@ -20,8 +20,6 @@ class Enrollee:
         for row in data:
             print("".join(word.ljust(col_width) for word in row))
 
-
-
 class EmergencyContact:
     def __init__(self, name, homePhone, workPhone):
         self._name = name
@@ -35,8 +33,6 @@ class EmergencyContact:
         for row in data:
             print("".join(word.ljust(col_width) for word in row))
 
-
-
 class Record:
     def __init__(self, answer, shortAnswer):
         self._ans = answer
@@ -46,7 +42,19 @@ class Record:
         print("Answer: "+self._ans)
         print("Explain: "+self._shortAns)
 
-
+class Experience:
+    def __init__(self, ans, schoolName, style, rank):
+        self._ans = ans
+        self._school = schoolName
+        self._style = style
+        self._rank = rank
+    
+    def display_Experience(self):
+        data = [["Answer: "+self._ans, "School name: "+self._school, "Style: "+self._style],
+                ['','',"How long (rank)? "+self._rank]]
+        col_width = max(len(word) for row in data for word in row) + 3  # padding
+        for row in data:
+            print("".join(word.ljust(col_width) for word in row))
 
 
 
@@ -57,6 +65,7 @@ obj3 = EmergencyContact("Hung Chiang", '7813416897','7819561799')
 r1 = Record('N', "")
 r2 = Record("Y", "ADHD")
 r3 = Record("Yes", "Xanax")
+exp = Experience('Y','Cobra Kai', 'Cobra','Black Belt')
 
 obj1.display_Enrollee()
 print("IN CASE OF AN EMERGENCY, PLEASE CONTACT:")
@@ -65,4 +74,5 @@ obj3.display_Emergency_Contact()
 r1.display_Record()
 r2.display_Record()
 r3.display_Record()
+exp.display_Experience()
 
