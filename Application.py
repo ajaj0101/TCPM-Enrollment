@@ -247,10 +247,33 @@ class DataEntry:
         # create cursor for db
         cursor = db.cursor()
         cursor.executescript('''
-
             CREATE TABLE IF NOT EXISTS Student (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT, birthday TEXT,
+                sex TEXT, address TEXT, city TEXT, state TEXT, zipcode TEXT, occupation TEXT,
+                homephone TEXT, workphone TEXT, contact1 TEXT, contacthome1 TEXT, contactwork1 TEXT,
+                contact2 TEXT, contacthome2 TEXT, contactwork2 TEXT, criminal_record_answer TEXT, 
+                criminal_record_response TEXT, med_condition_answer TEXT, med_condition_response TEXT,
+                medication_answer TEXT, medication_response TEXT, exp_answer TEXT, schoolname TEXT,
+                style TEXT, rank TEXT
+            )
+        ''')
+        db.commit()
+
+        
+
+
+
+        db.close()
+
+
+
+obj = DataEntry()
+obj.extract__write([0,1,2,3])
+
+
+''' CREATE TABLE IF NOT EXISTS Student (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-                name TEXT
+                name TEXT,
 				enrollee_id INTEGER,
 				emergencycontact_id INTEGER,
 				records_id INTEGER,
@@ -260,6 +283,7 @@ class DataEntry:
 
             CREATE TABLE IF NOT EXISTS Enrollee (
                 id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                name TEXT,
                 birthday TEXT,
                 sex TEXT,
                 address TEXT,
@@ -297,13 +321,4 @@ class DataEntry:
                 schoolname TEXT,
                 style TEXT,
                 rank TEXT
-            )
-
-        ''')
-
-        db.commit()
-        db.close()
-
-
-obj = DataEntry()
-obj.extract__write([0,1,2,3])
+            )'''
