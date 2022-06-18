@@ -1,3 +1,16 @@
+
+
+
+# helper functions
+def get_yes_or_no():
+        ans = input("Does this information look correct? (y/n): ")
+        validAnswers = ['y','Y','Yes','n','N','No']
+        while not ans in validAnswers:
+            ans = input ("Invalid answer. Please enter a 'y' for YES or 'n' for NO: ")
+        return ans
+
+
+
 class Enrollee:
     def __init__(self, name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone):
         self._name = name
@@ -56,23 +69,83 @@ class Experience:
         for row in data:
             print("".join(word.ljust(col_width) for word in row))
 
+class AppInput:
+
+    def check_enrollee(name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone):
+        # display input
+        print("-----------------------------------")
+        obj = Enrollee(name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone)
+        obj.display_Enrollee()
+        print("-----------------------------------")
 
 
-obj1 = Enrollee('Andrew Chiang', '1/11/2001', 'M','3 Fords Run',
-    '7818129168','Stoughton','MA','02072','Intern','7818129168')
-obj2 = EmergencyContact('Tracey Chiang', '7813416897','7819298481')
-obj3 = EmergencyContact("Hung Chiang", '7813416897','7819561799')
-r1 = Record('N', "")
-r2 = Record("Y", "ADHD")
-r3 = Record("Yes", "Xanax")
-exp = Experience('Y','Cobra Kai', 'Cobra','Black Belt')
+    def get_Enrollee_Input(self):
+        # get input
+        name = input("NAME: ")
+        bday = input("BIRTHDAY: ")
+        sex = input("SEX: ")
+        addr = input("ADDRESS: ")
+        homePhone = input("HOME PHONE: ")
+        city = input("CITY: ")
+        state = input("STATE: ")
+        zip = input("ZIP CODE: ")
+        occ = input("OCCUPATION: ")
+        workPhone = input("WORK PHONE: ")
+        # return input
+        return [name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone]
 
-obj1.display_Enrollee()
-print("IN CASE OF AN EMERGENCY, PLEASE CONTACT:")
-obj2.display_Emergency_Contact()
-obj3.display_Emergency_Contact()
-r1.display_Record()
-r2.display_Record()
-r3.display_Record()
-exp.display_Experience()
+    def get_Emergency_Contact_Input(self):
+        # get input
+        name = input("NAME: ")
+        homePhone = input("HOME PHONE: ")
+        workPhone = input("WORK PHONE: ")
+        # return input
+        return [name, homePhone, workPhone]
+
+    def get_Record_Input(self):
+        # get input
+        ans = input("Answer: ")
+        shortAns = input("Explain: ")
+        # return input
+        return [ans, shortAns]
+
+    def get_Experience_Input(self):
+        # get input
+        ans = input("Answer: ")
+        school = input("School name: ")
+        style = input("Style: ")
+        rank = input("How long (rank)? ")
+        # return input
+        return [ans, school, style, rank]
+
+
+        
+        '''# display input
+        self.check_enrollee(name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone)
+        # ask if input is correct
+        ans = get_yes_or_no()
+        
+        ans = ans.lower()
+        while not (ans == 'y' or ans == 'yes'):
+            dataLabel = ["NAME: ", "BIRTHDAY: ", "SEX:", "ADDRESS: ", "HOME PHONE: ", "CITY: ", "STATE: ", "ZIP: ", "OCC: ", "WORK PHONE: "]
+            data = [name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone]
+            # prompt user for number corresponding 
+            print("Please pick the label you want to change with the corresponding number: (0) Name\n(1) Birthday\n(2) Sex\n(3) Address\n"
+                "(4) Home Phone\n(5) City\n(6) State\n(7) Zip\n(8) Occupation\n(9) Work Phone")
+            num = input("Number: ")
+            # input checking "while num is not between -1 and 10:"
+            while not(int(num) > -1 and int(num) < 10):
+                num = input("Invalid answer. Please choose a number from 0 to 9: ")
+            choice = data[num]    
+            redo = input(dataLabel[num]+": ")
+            data[num] = redo
+            ans = input("Does this information look correct? (y/n): ")'''
+
+
+
+obj = AppInput()
+obj.get_Enrollee_Input()
+obj.get_Emergency_Contact_Input()
+obj.get_Record_Input
+obj.get_Experience_Input()
 
