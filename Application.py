@@ -12,8 +12,11 @@ class Enrollee:
         self._workPhone = workPhone
 
     def displayEnrollee(self):
-        data = [[self._name, self._bday, self._sex],[self._addr, self._homePhone], [self._city, self._state, self._zip],[self._occ, self._workPhone]]
-        col_width = max(len(word) for row in data for word in row) + 2  # padding
+        data = [["NAME: "+self._name, "BIRTHDAY: "+self._bday, "SEX: "+self._sex],
+                ["ADDRESS: "+self._addr, "HOME PHONE: "+self._homePhone], 
+                ["CITY: "+self._city, "STATE: "+self._state, "ZIP: "+self._zip],
+                ["OCCUPATION: "+self._occ, "WORK PHONE: "+self._workPhone]]
+        col_width = max(len(word) for row in data for word in row) + 8  # padding
         for row in data:
             print("".join(word.ljust(col_width) for word in row))
         '''print("NAME:", self._name, "\t\t\tBIRTHDAY:", self._bday, "\tSEX:", self._sex)
