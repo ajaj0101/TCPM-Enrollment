@@ -12,13 +12,17 @@ class Enrollee:
         self._workPhone = workPhone
 
     def displayEnrollee(self):
-        print("NAME:", self._name, "\t\t\tBIRTHDAY:", self._bday, "\tSEX:", self._sex)
+        data = [[self._name, self._bday, self._sex],[self._addr, self._homePhone], [self._city, self._state, self._zip],[self._occ, self._workPhone]]
+        col_width = max(len(word) for row in data for word in row) + 2  # padding
+        for row in data:
+            print("".join(word.ljust(col_width) for word in row))
+        '''print("NAME:", self._name, "\t\t\tBIRTHDAY:", self._bday, "\tSEX:", self._sex)
         print("ADDRESS:", self._addr, "\t\t\tHOME PHONE:", self._homePhone)
         print("CITY:", self._city, "\tSTATE:", self._state, "\tZIP CODE:", self._zip)
-        print("OCCUPATION:", self._occ, "\t\t\tWORK PHONE:", self._workPhone)
+        print("OCCUPATION:", self._occ, "\t\t\tWORK PHONE:", self._workPhone)'''
 
 
-obj = Enrollee('Andrew Chianggggggg', '1/11/2001', 'M','3 Fords Run',
+obj = Enrollee('Andrew Chiang', '1/11/2001', 'M','3 Fords Run',
     '7818129168','Stoughton','MA','02072','Intern','7818129168')
 
 obj.displayEnrollee()
