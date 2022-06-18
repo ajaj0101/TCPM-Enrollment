@@ -264,98 +264,32 @@ class DataEntry:
         # create cursor for db
         cursor = db.cursor()
         cursor.executescript('''
-
-            DROP TABLE IF EXISTS Date;
+            DROP TABLE IF EXISTS Student;
 
             CREATE TABLE IF NOT EXISTS Student (
-                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT, birthday TEXT,
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT, date TEXT, birthday TEXT,
                 sex TEXT, address TEXT, city TEXT, state TEXT, zipcode TEXT, occupation TEXT,
                 homephone TEXT, workphone TEXT, contact1 TEXT, contacthome1 TEXT, contactwork1 TEXT,
                 contact2 TEXT, contacthome2 TEXT, contactwork2 TEXT, criminal_record_answer TEXT, 
                 criminal_record_response TEXT, med_condition_answer TEXT, med_condition_response TEXT,
                 medication_answer TEXT, medication_response TEXT, exp_answer TEXT, schoolname TEXT,
                 style TEXT, rank TEXT
-            );
-
-            CREATE TABLE IF NOT EXISTS Date (
-                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-                date TEXT
-            );
-
-            CREATE TABLE IF NOT EXISTS Member (
-                student_id INTEGER,
-                date_id INTEGER,
-                PRIMARY KEY (student_id, date_id)
             )
         ''')
         db.commit()
-
-        # enter enrollee information
-        cursor.execute('''INSERT OR IGNORE INTO Student (name)
-        VALUES ( ? )''', (enrollee[0], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (birthday)
-        VALUES ( ? )''', (enrollee[1], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (sex)
-        VALUES ( ? )''', (enrollee[2], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (address)
-        VALUES ( ? )''', (enrollee[3], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (homephone)
-        VALUES ( ? )''', (enrollee[4], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (city)
-        VALUES ( ? )''', (enrollee[5], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (state)
-        VALUES ( ? )''', (enrollee[6], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (zipcode)
-        VALUES ( ? )''', (enrollee[7], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (occupation)
-        VALUES ( ? )''', (enrollee[8], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (workphone)
-        VALUES ( ? )''', (enrollee[9], ) )
-        # enter enrollee emergency contacts
-        cursor.execute('''INSERT OR IGNORE INTO Student (contact1)
-        VALUES ( ? )''', (contact1[0], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (contacthome1)
-        VALUES ( ? )''', (contact1[1], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (contactwork1)
-        VALUES ( ? )''', (contact1[2], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (contact2)
-        VALUES ( ? )''', (contact2[0], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (contacthome2)
-        VALUES ( ? )''', (contact2[1], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (contactwork2)
-        VALUES ( ? )''', (contact2[2], ) )
-        # enter enrollee records
-        cursor.execute('''INSERT OR IGNORE INTO Student (criminal_record_answer)
-        VALUES ( ? )''', (r1[0], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (criminal_record_response)
-        VALUES ( ? )''', (r1[1], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (med_condition_answer)
-        VALUES ( ? )''', (r2[0], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (med_condition_response)
-        VALUES ( ? )''', (r2[1], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (medication_answer)
-        VALUES ( ? )''', (r3[0], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (medication_response)
-        VALUES ( ? )''', (r3[1], ) )
-        # enter enrollee exp
-        cursor.execute('''INSERT OR IGNORE INTO Student (exp_answer)
-        VALUES ( ? )''', (exp1[0], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (schoolname)
-        VALUES ( ? )''', (exp1[1], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (style)
-        VALUES ( ? )''', (exp1[2], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Student (rank)
-        VALUES ( ? )''', (exp1[3], ) )
-        cursor.execute('''INSERT OR IGNORE INTO Date (date)
-        VALUES ( ? )''', (date, ) )
+        # enter enrolle information
+        cursor.execute('''INSERT INTO Student 
+        (name, date, birthday, sex, address, homephone, city, state, zipcode, occupation, workphone, 
+        contact1, contacthome1, contactwork1, contact2, contacthome2, contactwork2,
+        criminal_record_answer, criminal_record_response, med_condition_answer, med_condition_response, medication_answer, medication_response,
+        exp_answer, schoolname, style, rank)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+        (enrollee[0], date, enrollee[1],enrollee[2],enrollee[3],enrollee[4],enrollee[5],enrollee[6],enrollee[7],enrollee[8],enrollee[9], 
+        contact1[0], contact1[1], contact1[2], contact2[0], contact2[1], contact2[2],
+        r1[0], r1[1], r2[0], r2[1], r3[0], r3[1],
+        exp1[0], exp1[1], exp1[2], exp1[3]))
 
         db.commit()
-        
-        
-
-
-
-
         db.close()
 
 
