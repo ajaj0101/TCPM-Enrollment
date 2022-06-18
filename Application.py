@@ -85,11 +85,11 @@ class AppInput:
         bday = input("BIRTHDAY: ")
         sex = input("SEX: ")
         addr = input("ADDRESS: ")
-        homePhone = input("HOME PHONE: ")
         city = input("CITY: ")
         state = input("STATE: ")
         zip = input("ZIP CODE: ")
         occ = input("OCCUPATION: ")
+        homePhone = input("HOME PHONE: ")
         workPhone = input("WORK PHONE: ")
         # return input
         return [["NAME: ", "BIRTHDAY: ", "SEX:", "ADDRESS: ", "HOME PHONE: ", "CITY: ", "STATE: ", "ZIP: ", "OCC: ", "WORK PHONE: "],[name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone]]
