@@ -2,12 +2,20 @@
 
 
 # helper functions
+# does this information look good?
 def get_yes_or_no():
-        ans = input("Does this information look correct? (y/n): ")
-        validAnswers = ['y','Y','Yes','n','N','No']
-        while not ans in validAnswers:
-            ans = input ("Invalid answer. Please enter a 'y' for YES or 'n' for NO: ")
-        return ans.lower()
+    ans = input("Does this information look correct? (y/n): ")
+    validAnswers = ['y','Y','Yes','n','N','No']
+    while not ans in validAnswers:
+        ans = input ("Invalid answer. Please enter a 'y' for YES or 'n' for NO: ")
+    return ans.lower()
+
+# simple yes or no
+def get_yes_or_no_2(ans):
+    validAnswers = ['y','Y','Yes','n','N','No']
+    while not ans in validAnswers:
+        ans = input ("Invalid answer. Please enter a 'y' for YES or 'n' for NO: ")
+    return ans.lower()
 
 
 # displays enrollee information
@@ -97,44 +105,77 @@ class AppInput:
     def get_Record_Input(self):
         # get input
         ans = input("Answer: ")
-        shortAns = input("Explain: ")
+        res = get_yes_or_no_2(ans)
+        if res == 'y':
+            shortAns = input("Explain: ")
+        else:
+            shortAns = 'N/A'
         # return input
         return [["Answer: ", "Explain: "],[ans, shortAns]]
 
     def get_Experience_Input(self):
         # get input
         ans = input("Answer: ")
-        school = input("School name: ")
-        style = input("Style: ")
-        rank = input("How long (rank)? ")
+        res = get_yes_or_no_2(ans)
+        if res == 'y':
+            school = input("School name: ")
+            style = input("Style: ")
+            rank = input("How long (rank)? ")
+        else:
+            school = 'N/A'
+            style = 'N/A'
+            rank = 'N/A'
         # return input
         return [['Answer: ', 'School name: ', 'Style: ', 'How long (rank)?'],[ans, school, style, rank]]
 
 # gets and checks input
 class Application:
 
-    def check_enrollee(self, data, dataLabel):
+    def check_input(self, data, dataLabel, whichClass):
         # display input
         print("-----------------------------------")
-        obj = Enrollee(data)
-        obj.display_Enrollee()
+        if whichClass == 'Enrollee':
+            obj = Enrollee(data)
+            obj.display_Enrollee()
+        elif whichClass == 'EmergencyContact':
+            obj = EmergencyContact(data)
+            obj.display_Emergency_Contact()
+        elif whichClass == 'Record':
+            obj = Record(data)
+            obj.display_Record()
+        else:
+            obj = Experience(data)
+            obj.display_Experience()
         print("-----------------------------------")
         # ask if this is correct
         ans = get_yes_or_no()
         while not (ans == 'y' or ans == 'yes'):
             # prompt user for number corresponding 
-            print("Please pick the label you want to change with the corresponding number:\n(0) Name\n(1) Birthday\n(2) Sex\n(3) Address\n"
-                "(4) Home Phone\n(5) City\n(6) State\n(7) Zip\n(8) Occupation\n(9) Work Phone")
+            print("Please pick the label you want to change with the corresponding number:\n")
+            i = 0
+            for label in dataLabel:
+                print(('('+str(i)+') '+label))
+                i = i + 1
             num = input("Number: ")
-            # input checking "while num is not between -1 and 10:"
-            while not(int(num) > -1 and int(num) < 10):
-                num = input("Invalid answer. Please choose a number from 0 to 9: ")   
+            # input checking "while num is not between -1 and length of dataLabel:"
+            while (int(num) < -1 or int(num) > len(dataLabel)):
+                num = input("Invalid answer. Please choose a number from 0 to "+str(len(dataLabel))+": ")   
             # re-type information and re-assign it back to data 
             redo = input(dataLabel[int(num)])
             data[int(num)] = redo
             print("-----------------------------------")
-            obj = Enrollee(data)
-            obj.display_Enrollee()
+            if whichClass == 'Enrollee':
+                obj = Enrollee(data)
+                obj.display_Enrollee()
+            elif whichClass == 'EmergencyContact':
+                obj = EmergencyContact(data)
+                obj.display_Emergency_Contact()
+            elif whichClass == 'Record':
+                obj = Record(data)
+                obj.display_Record()
+            else:
+                obj = Experience(data)
+                obj.display_Experience()
             print("-----------------------------------")
             ans = get_yes_or_no()
         return data
@@ -143,18 +184,38 @@ class Application:
         entry = AppInput()
 
         # get 1 Enrollee input
+        print("Please enter Enrollee Information:\n")
         res = entry.get_Enrollee_Input()
         # ask if user input is correct
         dataLabel = res[0]
         data = res[1]
-        enrolleeData = self.check_enrollee(data, dataLabel)
+        enrolleeData = self.check_input(data, dataLabel,'Enrollee')
 
         # get 2 Emergency Contact Inputs
-        res = entry.get_Emergency_Contact_Input()
-        # ask if user input is correct
-        dataLabel = res[0]
-        data = res[1]
+        i = 0
+        contactsData = list()
+        print("Please enter 2 Emergency Contacts:\n")
+        while i < 2:
+            res = entry.get_Emergency_Contact_Input()
+            # ask if user input is correct
+            dataLabel = res[0]
+            data = res[1]
+            contactsData.append(self.check_input(data, dataLabel, 'EmergencyContact'))
+            i = i + 1
+
+        prompt = ['Do you have any Criminal Records?\n', 'Do you have any Physical/Mental Conditions?\n', 'Are you on any Medication?\n']
+        i = 0
+        recordsData = list()
+        while i < 3:
+            print(prompt[i])
+            res = entry.get_Record_Input()
+            dataLabel = res[0]
+            data = res[1]
+            recordsData.append(self.check_input(data, dataLabel, 'Record'))
+            i = i + 1
         
+        print("Have you ever trained in any style of Martial Arts before?\n")
+
 
 obj = Application()
 obj.get_Application_Input()
