@@ -264,7 +264,6 @@ class DataEntry:
         # create cursor for db
         cursor = db.cursor()
         cursor.executescript('''
-            DROP TABLE IF EXISTS Student;
 
             CREATE TABLE IF NOT EXISTS Student (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT, date TEXT, birthday TEXT,
