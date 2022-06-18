@@ -34,10 +34,10 @@ class Enrollee:
             print("".join(word.ljust(col_width) for word in row))
 # displays emergency contact information
 class EmergencyContact:
-    def __init__(self, name, homePhone, workPhone):
-        self._name = name
-        self._homePhone = homePhone
-        self._workPhone = workPhone
+    def __init__(self, data):
+        self._name = data[0]
+        self._homePhone = data[1]
+        self._workPhone = data[2]
 
     def display_Emergency_Contact(self):
         data = [["NAME: "+self._name, "HOME PHONE: "+self._homePhone],
@@ -47,20 +47,20 @@ class EmergencyContact:
             print("".join(word.ljust(col_width) for word in row))
 # displays records information
 class Record:
-    def __init__(self, answer, shortAnswer):
-        self._ans = answer
-        self._shortAns = shortAnswer
+    def __init__(self, data):
+        self._ans = data[0]
+        self._shortAns = data[1]
     
     def display_Record(self):
         print("Answer: "+self._ans)
         print("Explain: "+self._shortAns)
 # displays past experience information
 class Experience:
-    def __init__(self, ans, schoolName, style, rank):
-        self._ans = ans
-        self._school = schoolName
-        self._style = style
-        self._rank = rank
+    def __init__(self, data):
+        self._ans = data[0]
+        self._school = data[1]
+        self._style = data[2]
+        self._rank = data[3]
     
     def display_Experience(self):
         data = [["Answer: "+self._ans, "School name: "+self._school, "Style: "+self._style],
@@ -128,7 +128,8 @@ class Application:
             num = input("Number: ")
             # input checking "while num is not between -1 and 10:"
             while not(int(num) > -1 and int(num) < 10):
-                num = input("Invalid answer. Please choose a number from 0 to 9: ")    
+                num = input("Invalid answer. Please choose a number from 0 to 9: ")   
+            # re-type information and re-assign it back to data 
             redo = input(dataLabel[int(num)])
             data[int(num)] = redo
             print("-----------------------------------")
@@ -138,18 +139,21 @@ class Application:
             ans = get_yes_or_no()
         return data
 
-
-        
-
     def get_Application_Input(self):
         entry = AppInput()
-        # get enrollee input
+
+        # get 1 Enrollee input
         res = entry.get_Enrollee_Input()
         # ask if user input is correct
         dataLabel = res[0]
         data = res[1]
-        self.check_enrollee(data, dataLabel)
+        enrolleeData = self.check_enrollee(data, dataLabel)
 
+        # get 2 Emergency Contact Inputs
+        res = entry.get_Emergency_Contact_Input()
+        # ask if user input is correct
+        dataLabel = res[0]
+        data = res[1]
         
 
 obj = Application()
