@@ -16,11 +16,10 @@ class Enrollee:
                 ["ADDRESS: "+self._addr, "HOME PHONE: "+self._homePhone], 
                 ["CITY: "+self._city, "STATE: "+self._state, "ZIP: "+self._zip],
                 ["OCCUPATION: "+self._occ, "WORK PHONE: "+self._workPhone]]
-        print("-----------------------------------------------------------")
         col_width = max(len(word) for row in data for word in row) + 8  # padding
         for row in data:
             print("".join(word.ljust(col_width) for word in row))
-        print("-----------------------------------------------------------")
+
 
 
 class EmergencyContact:
@@ -35,13 +34,35 @@ class EmergencyContact:
         col_width = max(len(word) for row in data for word in row) + 8  # padding
         for row in data:
             print("".join(word.ljust(col_width) for word in row))
-        print("-----------------------------------------------------------")
 
 
 
-obj = Enrollee('Andrew Chiang', '1/11/2001', 'M','3 Fords Run',
+class Record:
+    def __init__(self, answer, shortAnswer):
+        self._ans = answer
+        self._shortAns = shortAnswer
+    
+    def display_Record(self):
+        print("Answer: "+self._ans)
+        print("Explain: "+self._shortAns)
+
+
+
+
+
+obj1 = Enrollee('Andrew Chiang', '1/11/2001', 'M','3 Fords Run',
     '7818129168','Stoughton','MA','02072','Intern','7818129168')
-obj.display_Enrollee()
-obj = EmergencyContact('Tracey Chiang', '7813416897','7819298481')
+obj2 = EmergencyContact('Tracey Chiang', '7813416897','7819298481')
+obj3 = EmergencyContact("Hung Chiang", '7813416897','7819561799')
+r1 = Record('N', "")
+r2 = Record("Y", "ADHD")
+r3 = Record("Yes", "Xanax")
+
+obj1.display_Enrollee()
 print("IN CASE OF AN EMERGENCY, PLEASE CONTACT:")
-obj.display_Emergency_Contact()
+obj2.display_Emergency_Contact()
+obj3.display_Emergency_Contact()
+r1.display_Record()
+r2.display_Record()
+r3.display_Record()
+
