@@ -111,7 +111,7 @@ class AppInput:
         else:
             shortAns = 'N/A'
         # return input
-        return [["Answer: ", "Explain: "],[ans, shortAns]]
+        return [["Answer: ", "Explain: "],[res, shortAns]]
 
     def get_Experience_Input(self):
         # get input
@@ -126,7 +126,7 @@ class AppInput:
             style = 'N/A'
             rank = 'N/A'
         # return input
-        return [['Answer: ', 'School name: ', 'Style: ', 'How long (rank)?'],[ans, school, style, rank]]
+        return [['Answer: ', 'School name: ', 'Style: ', 'How long (rank)?'],[res, school, style, rank]]
 
 # gets and checks input
 class Application:
@@ -201,8 +201,9 @@ class Application:
             dataLabel = res[0]
             data = res[1]
             contactsData.append(self.check_input(data, dataLabel, 'EmergencyContact'))
+            print("Please enter another contact, if applicable.\n")
             i = i + 1
-
+        # get 3 records
         prompt = ['Do you have any Criminal Records?\n', 'Do you have any Physical/Mental Conditions?\n', 'Are you on any Medication?\n']
         i = 0
         recordsData = list()
@@ -213,8 +214,19 @@ class Application:
             data = res[1]
             recordsData.append(self.check_input(data, dataLabel, 'Record'))
             i = i + 1
-        
-        print("Have you ever trained in any style of Martial Arts before?\n")
+        # get n Experiences
+        print("Have you ever trained in any style of Martial Arts before? ")
+        experienceData = list()
+        i = 0
+        while i < 2:
+            res = entry.get_Experience_Input()
+            dataLabel = res[0]
+            data = res[1]
+            experienceData.append(self.check_input(data, dataLabel, 'Experience'))
+            print("Do you have anymore experience?")
+            i = i + 1
+            
+
 
 
 obj = Application()
