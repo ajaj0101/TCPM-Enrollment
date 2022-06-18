@@ -1,4 +1,4 @@
-
+import sqlite3
 
 
 # helper functions
@@ -226,7 +226,7 @@ class Application:
             print("Do you have anymore experience?")
             i = i + 1
 
-        return {"Enrollee": enrolleeData, "Emergency Contact": contactsData, "Records": recordsData, "Experience": experienceData}
+        return [enrolleeData, contactsData, recordsData, experienceData]
 
 
 class DataEntry:
@@ -237,6 +237,73 @@ class DataEntry:
 
     # extract information from dictionary and write to file.
     def extract__write(self, entryData):
-        
+        enrollmentD = entryData[0]
+        contactsD = entryData[1]
+        recordsD = entryData[2]
+        experienceD = entryData[3]
+
+        # connect db variable to data base
+        db = sqlite3.connect('TCPMdb.sqlite')
+        # create cursor for db
+        cursor = db.cursor()
+        cursor.executescript('''
+
+            CREATE TABLE IF NOT EXISTS Student (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                name TEXT
+				enrollee_id INTEGER,
+				emergencycontact_id INTEGER,
+				records_id INTEGER,
+				experience_id INTEGER,
+				PRIMARY KEY (enrollee_id, emergencycontact_id, records_id, experience_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS Enrollee (
+                id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                birthday TEXT,
+                sex TEXT,
+                address TEXT,
+                city TEXT,
+                state TEXT,
+                zipcode TEXT,
+                occupation TEXT,
+                homephone TEXT,
+                workphone TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS EmergencyContacts (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                name1 TEXT,
+                home1 TEXT,
+                work1 TEXT,
+                name2 TEXT,
+                home2 TEXT,
+                work2 TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS Records (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                criminal_record_answer TEXT,
+                criminal_record_response TEXT,
+                med_condition_answer TEXT,
+                med_condition_response TEXT,
+                medication_answer TEXT,
+                medication_response TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS Experience (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                exp_answer TEXT,
+                schoolname TEXT,
+                style TEXT,
+                rank TEXT
+            )
+
+        ''')
+
+        db.commit()
+        db.close()
 
 
+obj = DataEntry()
+obj.extract__write([0,1,2,3])
