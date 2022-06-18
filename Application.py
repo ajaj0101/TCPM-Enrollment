@@ -7,22 +7,22 @@ def get_yes_or_no():
         validAnswers = ['y','Y','Yes','n','N','No']
         while not ans in validAnswers:
             ans = input ("Invalid answer. Please enter a 'y' for YES or 'n' for NO: ")
-        return ans
+        return ans.lower()
 
 
-
+# displays enrollee information
 class Enrollee:
-    def __init__(self, name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone):
-        self._name = name
-        self._bday = bday
-        self._sex = sex
-        self._addr = addr
-        self._homePhone = homePhone
-        self._city = city
-        self._state = state
-        self._zip = zip
-        self._occ = occ
-        self._workPhone = workPhone
+    def __init__(self, data):
+        self._name = data[0]
+        self._bday = data[1]
+        self._sex = data[2]
+        self._addr = data[3]
+        self._homePhone = data[4]
+        self._city = data[5]
+        self._state = data[6]
+        self._zip = data[7]
+        self._occ = data[8]
+        self._workPhone = data[9]
 
     def display_Enrollee(self):
         data = [["NAME: "+self._name, "BIRTHDAY: "+self._bday, "SEX: "+self._sex],
@@ -32,7 +32,7 @@ class Enrollee:
         col_width = max(len(word) for row in data for word in row) + 8  # padding
         for row in data:
             print("".join(word.ljust(col_width) for word in row))
-
+# displays emergency contact information
 class EmergencyContact:
     def __init__(self, name, homePhone, workPhone):
         self._name = name
@@ -45,7 +45,7 @@ class EmergencyContact:
         col_width = max(len(word) for row in data for word in row) + 8  # padding
         for row in data:
             print("".join(word.ljust(col_width) for word in row))
-
+# displays records information
 class Record:
     def __init__(self, answer, shortAnswer):
         self._ans = answer
@@ -54,7 +54,7 @@ class Record:
     def display_Record(self):
         print("Answer: "+self._ans)
         print("Explain: "+self._shortAns)
-
+# displays past experience information
 class Experience:
     def __init__(self, ans, schoolName, style, rank):
         self._ans = ans
@@ -68,16 +68,8 @@ class Experience:
         col_width = max(len(word) for row in data for word in row) + 3  # padding
         for row in data:
             print("".join(word.ljust(col_width) for word in row))
-
+# gets input for Enrollee, EmergencyContact, Record, and Experience classes to display
 class AppInput:
-
-    def check_enrollee(name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone):
-        # display input
-        print("-----------------------------------")
-        obj = Enrollee(name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone)
-        obj.display_Enrollee()
-        print("-----------------------------------")
-
 
     def get_Enrollee_Input(self):
         # get input
@@ -92,7 +84,7 @@ class AppInput:
         occ = input("OCCUPATION: ")
         workPhone = input("WORK PHONE: ")
         # return input
-        return [name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone]
+        return [["NAME: ", "BIRTHDAY: ", "SEX:", "ADDRESS: ", "HOME PHONE: ", "CITY: ", "STATE: ", "ZIP: ", "OCC: ", "WORK PHONE: "],[name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone]]
 
     def get_Emergency_Contact_Input(self):
         # get input
@@ -100,14 +92,14 @@ class AppInput:
         homePhone = input("HOME PHONE: ")
         workPhone = input("WORK PHONE: ")
         # return input
-        return [name, homePhone, workPhone]
+        return [["NAME: ", "HOME PHONE: ", "WORK PHONE: "],[name, homePhone, workPhone]]
 
     def get_Record_Input(self):
         # get input
         ans = input("Answer: ")
         shortAns = input("Explain: ")
         # return input
-        return [ans, shortAns]
+        return [["Answer: ", "Explain: "],[ans, shortAns]]
 
     def get_Experience_Input(self):
         # get input
@@ -116,36 +108,52 @@ class AppInput:
         style = input("Style: ")
         rank = input("How long (rank)? ")
         # return input
-        return [ans, school, style, rank]
+        return [['Answer: ', 'School name: ', 'Style: ', 'How long (rank)?'],[ans, school, style, rank]]
 
+# gets and checks input
+class Application:
 
-        
-        '''# display input
-        self.check_enrollee(name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone)
-        # ask if input is correct
+    def check_enrollee(self, data, dataLabel):
+        # display input
+        print("-----------------------------------")
+        obj = Enrollee(data)
+        obj.display_Enrollee()
+        print("-----------------------------------")
+        # ask if this is correct
         ans = get_yes_or_no()
-        
-        ans = ans.lower()
         while not (ans == 'y' or ans == 'yes'):
-            dataLabel = ["NAME: ", "BIRTHDAY: ", "SEX:", "ADDRESS: ", "HOME PHONE: ", "CITY: ", "STATE: ", "ZIP: ", "OCC: ", "WORK PHONE: "]
-            data = [name, bday, sex, addr, homePhone, city, state, zip, occ, workPhone]
             # prompt user for number corresponding 
-            print("Please pick the label you want to change with the corresponding number: (0) Name\n(1) Birthday\n(2) Sex\n(3) Address\n"
+            print("Please pick the label you want to change with the corresponding number:\n(0) Name\n(1) Birthday\n(2) Sex\n(3) Address\n"
                 "(4) Home Phone\n(5) City\n(6) State\n(7) Zip\n(8) Occupation\n(9) Work Phone")
             num = input("Number: ")
             # input checking "while num is not between -1 and 10:"
             while not(int(num) > -1 and int(num) < 10):
-                num = input("Invalid answer. Please choose a number from 0 to 9: ")
-            choice = data[num]    
-            redo = input(dataLabel[num]+": ")
-            data[num] = redo
-            ans = input("Does this information look correct? (y/n): ")'''
+                num = input("Invalid answer. Please choose a number from 0 to 9: ")    
+            redo = input(dataLabel[int(num)])
+            data[int(num)] = redo
+            print("-----------------------------------")
+            obj = Enrollee(data)
+            obj.display_Enrollee()
+            print("-----------------------------------")
+            ans = get_yes_or_no()
+        return data
 
 
+        
 
-obj = AppInput()
-obj.get_Enrollee_Input()
-obj.get_Emergency_Contact_Input()
-obj.get_Record_Input
-obj.get_Experience_Input()
+    def get_Application_Input(self):
+        entry = AppInput()
+        # get enrollee input
+        res = entry.get_Enrollee_Input()
+        # ask if user input is correct
+        dataLabel = res[0]
+        data = res[1]
+        self.check_enrollee(data, dataLabel)
+
+        
+
+obj = Application()
+obj.get_Application_Input()
+
+
 
