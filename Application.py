@@ -1,4 +1,6 @@
+from cmath import exp
 import sqlite3
+from winreg import ExpandEnvironmentStrings
 
 
 # helper functions
@@ -7,14 +9,14 @@ def get_yes_or_no():
     ans = input("Does this information look correct? (y/n): ")
     validAnswers = ['y','Y','Yes','n','N','No']
     while not ans in validAnswers:
-        ans = input ("Invalid answer. Please enter a 'y' for YES or 'n' for NO: ")
+        ans = input ("Invalid answer. Please enter a 'y' for no or 'n' for no: ")
     return ans.lower()
 
 # simple yes or no
 def get_yes_or_no_2(ans):
     validAnswers = ['y','Y','Yes','n','N','No']
     while not ans in validAnswers:
-        ans = input ("Invalid answer. Please enter a 'y' for YES or 'n' for NO: ")
+        ans = input ("Invalid answer. Please enter a 'y' for yes or 'n' for no: ")
     return ans.lower()
 
 
@@ -185,6 +187,8 @@ class Application:
         enrolleeData = list()
         # get 1 Enrollee input
         print("Please enter Enrollee Information:\n")
+        # get date
+        date = input("Today's Date: ")
         res = entry.get_Enrollee_Input()
         # ask if user input is correct
         dataLabel = res[0]
@@ -226,7 +230,7 @@ class Application:
             print("Do you have anymore experience?")
             i = i + 1
 
-        return [enrolleeData, contactsData, recordsData, experienceData]
+        return [enrolleeData, contactsData, recordsData, experienceData, date]
 
 
 class DataEntry:
@@ -237,16 +241,32 @@ class DataEntry:
 
     # extract information from dictionary and write to file.
     def extract__write(self, entryData):
-        enrollmentD = entryData[0]
-        contactsD = entryData[1]
-        recordsD = entryData[2]
-        experienceD = entryData[3]
+        enrollmentD = entryData[0] # 10 items
+        enrollee = enrollmentD[0]
+
+        contactsD = entryData[1] # 6 items
+        contact1 = contactsD[0]
+        contact2 = contactsD[1]
+
+        recordsD = entryData[2] # 6 items
+        r1 = recordsD[0]
+        r2 = recordsD[1]
+        r3 = recordsD[2]
+
+        experienceD = entryData[3] # 6 items
+        exp1 = experienceD[0]
+
+
+        date = entryData[4]
 
         # connect db variable to data base
         db = sqlite3.connect('TCPMdb.sqlite')
         # create cursor for db
         cursor = db.cursor()
         cursor.executescript('''
+
+            DROP TABLE IF EXISTS Date;
+
             CREATE TABLE IF NOT EXISTS Student (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT, birthday TEXT,
                 sex TEXT, address TEXT, city TEXT, state TEXT, zipcode TEXT, occupation TEXT,
@@ -255,11 +275,84 @@ class DataEntry:
                 criminal_record_response TEXT, med_condition_answer TEXT, med_condition_response TEXT,
                 medication_answer TEXT, medication_response TEXT, exp_answer TEXT, schoolname TEXT,
                 style TEXT, rank TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS Date (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                date TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS Member (
+                student_id INTEGER,
+                date_id INTEGER,
+                PRIMARY KEY (student_id, date_id)
             )
         ''')
         db.commit()
 
+        # enter enrollee information
+        cursor.execute('''INSERT OR IGNORE INTO Student (name)
+        VALUES ( ? )''', (enrollee[0], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (birthday)
+        VALUES ( ? )''', (enrollee[1], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (sex)
+        VALUES ( ? )''', (enrollee[2], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (address)
+        VALUES ( ? )''', (enrollee[3], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (homephone)
+        VALUES ( ? )''', (enrollee[4], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (city)
+        VALUES ( ? )''', (enrollee[5], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (state)
+        VALUES ( ? )''', (enrollee[6], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (zipcode)
+        VALUES ( ? )''', (enrollee[7], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (occupation)
+        VALUES ( ? )''', (enrollee[8], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (workphone)
+        VALUES ( ? )''', (enrollee[9], ) )
+        # enter enrollee emergency contacts
+        cursor.execute('''INSERT OR IGNORE INTO Student (contact1)
+        VALUES ( ? )''', (contact1[0], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (contacthome1)
+        VALUES ( ? )''', (contact1[1], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (contactwork1)
+        VALUES ( ? )''', (contact1[2], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (contact2)
+        VALUES ( ? )''', (contact2[0], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (contacthome2)
+        VALUES ( ? )''', (contact2[1], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (contactwork2)
+        VALUES ( ? )''', (contact2[2], ) )
+        # enter enrollee records
+        cursor.execute('''INSERT OR IGNORE INTO Student (criminal_record_answer)
+        VALUES ( ? )''', (r1[0], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (criminal_record_response)
+        VALUES ( ? )''', (r1[1], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (med_condition_answer)
+        VALUES ( ? )''', (r2[0], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (med_condition_response)
+        VALUES ( ? )''', (r2[1], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (medication_answer)
+        VALUES ( ? )''', (r3[0], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (medication_response)
+        VALUES ( ? )''', (r3[1], ) )
+        # enter enrollee exp
+        cursor.execute('''INSERT OR IGNORE INTO Student (exp_answer)
+        VALUES ( ? )''', (exp1[0], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (schoolname)
+        VALUES ( ? )''', (exp1[1], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (style)
+        VALUES ( ? )''', (exp1[2], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Student (rank)
+        VALUES ( ? )''', (exp1[3], ) )
+        cursor.execute('''INSERT OR IGNORE INTO Date (date)
+        VALUES ( ? )''', (date, ) )
+
+        db.commit()
         
+        
+
 
 
 
@@ -268,57 +361,5 @@ class DataEntry:
 
 
 obj = DataEntry()
-obj.extract__write([0,1,2,3])
-
-
-''' CREATE TABLE IF NOT EXISTS Student (
-                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-                name TEXT,
-				enrollee_id INTEGER,
-				emergencycontact_id INTEGER,
-				records_id INTEGER,
-				experience_id INTEGER,
-				PRIMARY KEY (enrollee_id, emergencycontact_id, records_id, experience_id)
-            );
-
-            CREATE TABLE IF NOT EXISTS Enrollee (
-                id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-                name TEXT,
-                birthday TEXT,
-                sex TEXT,
-                address TEXT,
-                city TEXT,
-                state TEXT,
-                zipcode TEXT,
-                occupation TEXT,
-                homephone TEXT,
-                workphone TEXT
-            );
-
-            CREATE TABLE IF NOT EXISTS EmergencyContacts (
-                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-                name1 TEXT,
-                home1 TEXT,
-                work1 TEXT,
-                name2 TEXT,
-                home2 TEXT,
-                work2 TEXT
-            );
-
-            CREATE TABLE IF NOT EXISTS Records (
-                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-                criminal_record_answer TEXT,
-                criminal_record_response TEXT,
-                med_condition_answer TEXT,
-                med_condition_response TEXT,
-                medication_answer TEXT,
-                medication_response TEXT
-            );
-
-            CREATE TABLE IF NOT EXISTS Experience (
-                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-                exp_answer TEXT,
-                schoolname TEXT,
-                style TEXT,
-                rank TEXT
-            )'''
+data = obj.get_Entry()
+obj.extract__write(data)
