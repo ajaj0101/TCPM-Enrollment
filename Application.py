@@ -182,14 +182,14 @@ class Application:
 
     def get_Application_Input(self):
         entry = AppInput()
-
+        enrolleeData = list()
         # get 1 Enrollee input
         print("Please enter Enrollee Information:\n")
         res = entry.get_Enrollee_Input()
         # ask if user input is correct
         dataLabel = res[0]
         data = res[1]
-        enrolleeData = self.check_input(data, dataLabel,'Enrollee')
+        enrolleeData.append(self.check_input(data, dataLabel,'Enrollee'))
 
         # get 2 Emergency Contact Inputs
         i = 0
@@ -225,12 +225,18 @@ class Application:
             experienceData.append(self.check_input(data, dataLabel, 'Experience'))
             print("Do you have anymore experience?")
             i = i + 1
-            
+
+        return {"Enrollee": enrolleeData, "Emergency Contact": contactsData, "Records": recordsData, "Experience": experienceData}
 
 
+class DataEntry:
+    # get and return all information
+    def get_Entry(self):
+        obj = Application()
+        return obj.get_Application_Input()
 
-obj = Application()
-obj.get_Application_Input()
-
+    # extract information from dictionary and write to file.
+    def extract__write(self, entryData):
+        
 
 
